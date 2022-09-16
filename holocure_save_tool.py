@@ -1,3 +1,23 @@
+VERSION = '0.0.3-Pilot'
+ABOUT_MSG=f'''HoloCure bad bad Save Tool
+Version: {VERSION}
+Date: 2022/09/13
+Author: Aclich
+Require: python > 3.6, tkinter
+Source code: https://github.com/aclich/Holocure_save_editor
+
+Change Log:
+ - New Item, Colab unlock
+ - Unlock Stage, Outfits
+ - Tears Edit
+
+Tested Game version
+0.4.1662728581
+
+Known issue:
+Not compatible with older version of save file.
+'''
+
 import json, base64, os
 import tkinter as tk
 from tkinter import CENTER, DISABLED, messagebox
