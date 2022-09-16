@@ -23,19 +23,6 @@ import tkinter as tk
 from tkinter import CENTER, DISABLED, messagebox
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from typing import List, Tuple
-from tkinter import *
-from tkinter import ttk
-
-root = Tk()
-root.geometry("500x400")
-
-# Add A Scrollbar To The Canvas
-my_scrollbar = ttk.Scrollbar(main_frame, orient=VERTICAL, command=my_canvas.yview)
-my_scrollbar.pack(side=RIGHT, fill=Y)
-
-# Configure The Canvas
-my_canvas.configure(yscrollcommand=my_scrollbar.set)
-my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
 
 LVL_KEYS = [] #['characters', 'tears']
 CHK_KEYS = ['specUnlock', 'refund', 'challenge', 'GROff', 'growth']
@@ -116,7 +103,7 @@ class mainApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title(f'HoloCure Save Tool {VERSION}')
-        self.resizable(0, 0)
+        self.resizable(1290, 1080)
         self.geometry(GEOMETRY)
         self._create_component()
         self._layout()
@@ -128,14 +115,14 @@ class mainApp(tk.Tk):
 
     def _layout(self):
         for btn in (self.editor_btn, self.inherit_btn, self.about_btn):
-            btn.pack(padx=120, pady=(10, 10))
+            btn.pack(padx=100, pady=(1, 1))
 
 class editorPage(tk.Toplevel):
     def __init__(self, mainapp:mainApp, **kwargs):
         super().__init__(mainapp, **kwargs)
         self.title('Holocure Save Editor')
         self.geometry(GEOMETRY)
-        self.resizable(0, 0)
+        self.resizable(1290, 1080)
         self.editor = SaveEditor()
         self._open_save(self)
         if self.file_path == '':
@@ -152,14 +139,14 @@ class editorPage(tk.Toplevel):
         self.save_btn = tk.Button(self, text='Save', justify=CENTER, command=lambda: self._save_as(self))
 
     def _layout(self):
-        t_col, _row = 2, 0
-        self.mskframe.grid(column=0, columnspan=t_col, row=_row, sticky='news', pady=(0,10))
+        t_col, _row = 10, 10
+        self.mskframe.grid(column=0, columnspan=t_col, row=_row, sticky='news', pady=(0,1))
         for _row, frame in enumerate(self.chkframes, 1):
-            frame.grid(column=0, columnspan=t_col, row=_row, sticky='news', pady=(0,5))
+            frame.grid(column=0, columnspan=t_col, row=_row, sticky='news', pady=(0,1))
         for _row, frame in enumerate(self.LevelFrames, _row+1):
-            frame.grid(column=0, columnspan=t_col, row=_row, sticky='news', pady=(0,10))
+            frame.grid(column=0, columnspan=t_col, row=_row, sticky='news', pady=(0,1))
         self.open_btn.grid(column=0, row=_row+1)
-        self.save_btn.grid(column=1, row=_row+1, pady=10)
+        self.save_btn.grid(column=1, row=_row+1, pady=1)
         self.withdraw()
         self.deiconify()
 
@@ -215,16 +202,16 @@ class miskFrame(tk.Frame):
                                          variable=self.var_map[k], onvalue=1.0, offvalue=0.0) for k in CHK_KEYS}
         
     def _layout(self):
-        col = row = 0
-        self.title_label.grid(column=col, row=row, columnspan=100, sticky='nwes')
+        col = row = 10
+        self.title_label.grid(column=col, row=row, columnspan=1000, sticky='nwes')
         row += 1
         for i, key in zip(range(0,len(self.lb_map)*2, 2), self.lb_map):
             col, _row = i%10, i//10+row
-            self.lb_map[key].grid(column=col, row=_row, sticky='e', pady=5)
-            self.en_map[key].grid(column=col+1, row=_row, sticky='w', padx=(0, 10), pady=5)
+            self.lb_map[key].grid(column=col, row=_row, sticky='e', pady=1)
+            self.en_map[key].grid(column=col+1, row=_row, sticky='w', padx=(0, 1), pady=1)
         col, row = 0, _row+1
         for i, key in enumerate(self.ck_map):
-            self.ck_map[key].grid(column=i%6, row=row+i//6, columnspan=1, sticky='w', ipady=10)
+            self.ck_map[key].grid(column=i%6, row=row+i//6, columnspan=1000, sticky='w', ipady=1)
 
     def _valid_num(self, P):
         if str.isdigit(P):
@@ -247,11 +234,11 @@ class unlockFrame(tk.Frame):
         self.ck_map = {k:tk.Checkbutton(self, text=k, variable=self.check_map[k], onvalue=1, offvalue=0) for k in self.items_name}
     
     def _layout(self):
-        col = row = 0
-        self.sub_lb.grid(column=col,columnspan=3 ,row=row, sticky="nsw")
+        col = row = 10
+        self.sub_lb.grid(column=col,columnspan=1000 ,row=row, sticky="nsw")
         row += 1
         for i, check_box in enumerate(self.ck_map.values()):
-            check_box.grid(column=i%6, row=row+i//6, sticky='w', pady=(0,3), padx=(0, 5))
+            check_box.grid(column=i%6, row=row+i//6, sticky='w', pady=(0,1), padx=(0, 1))
 
 class LevelFrame(tk.Frame):
     def __init__(self, parent:editorPage, key_name:str, **kwargs):
@@ -269,13 +256,13 @@ class LevelFrame(tk.Frame):
                                     textvariable=self.chr_var[k]) for k, _ in self.chr_list}
 
     def _layout(self):
-        row = col = 0
-        self.sub_lb.grid(column=col, columnspan=3, row=row, sticky='w')
+        row = col = 10
+        self.sub_lb.grid(column=col, columnspan=100, row=row, sticky='w')
         row += 1
         for i, chr in zip(range(0,len(self.chr_lb)*2,2), self.chr_lb):
             col, _row = i%14, i//14+row
-            self.chr_lb[chr].grid(column=col, row=_row, sticky='w', pady=(0,5))
-            self.chr_ent[chr].grid(column=col+1, row=_row, sticky='e', pady=(0,5), padx=(0,5))
+            self.chr_lb[chr].grid(column=col, row=_row, sticky='w', pady=(0,1))
+            self.chr_ent[chr].grid(column=col+1, row=_row, sticky='e', pady=(0,1), padx=(0,1))
 
 class saveInheritPage(tk.Toplevel):
     def __init__(self, mainapp:mainApp, **kwargs):
@@ -306,9 +293,9 @@ class saveInheritPage(tk.Toplevel):
 
     def _layout(self):
         for i, k in enumerate(('orig','curr')):
-            self.btn_map[k].grid(column=0, row=i, sticky='nsw', pady=(10,0), padx=(10,0))
-            self.lb_map[k].grid(column=1, row=i, sticky='nsw', pady=(10,0), padx=(5,10))
-        self.inherit_btn.grid(column=0, row=2, sticky='nsw', pady=(10,10), padx=10)
+            self.btn_map[k].grid(column=0, row=i, sticky='nsw', pady=(1,0), padx=(1,0))
+            self.lb_map[k].grid(column=1, row=i, sticky='nsw', pady=(1,0), padx=(1,1))
+        self.inherit_btn.grid(column=0, row=20, sticky='nsw', pady=(1,1), padx=1)
 
     def _select_save(self, key: str):
         _file_path = AskSavePath(self.var_map[key].get()) if self.var_map[key].get() else AskSavePath()
